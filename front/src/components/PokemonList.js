@@ -191,23 +191,26 @@ class PokemonList extends Component {
         })
     }
 
-    handleSearch() {
-        this.setState({ showLoadAllSpinner: true }, () => {
-            fetch(process.env.REACT_APP_API_URL + "pokemon/?limit=" + this.state.totalPokemon, {
-                method: 'GET'
-            }).then(res => {
-                return res.json()
-            }).then(data => {
-                this.setState({ nextPage: data.next, totalPokemon: data.count })
-                let aux = [];
-                aux = data.results
-                let res = aux.filter(x => x.name.includes(this.state.searchTerm))
-                console.log(res);
-                this.loadPokemonFilterInfo(res)
-            }).catch(err => {
-                console.log(err)
+    handleSearch(e) {
+        console.log(this.state.searchTerm);
+        if (this.state.searchTerm) {
+            e.preventDefault();
+            this.setState({ showLoadAllSpinner: true }, () => {
+                fetch(process.env.REACT_APP_API_URL + "pokemon/?limit=" + this.state.totalPokemon, {
+                    method: 'GET'
+                }).then(res => {
+                    return res.json()
+                }).then(data => {
+                    this.setState({ nextPage: data.next, totalPokemon: data.count })
+                    let aux = [];
+                    aux = data.results
+                    let res = aux.filter(x => x.name.includes(this.state.searchTerm))
+                    this.loadPokemonFilterInfo(res)
+                }).catch(err => {
+                    console.log(err)
+                })
             })
-        })
+        }
     }
 
     loadPokemonFilterInfo(data, callback) {
@@ -342,16 +345,26 @@ class PokemonList extends Component {
                                     <Card.Img variant="top" src={i.sprites.front_default} />
                                     <Card.Body>
                                         <Card.Title>{i.name}</Card.Title>
-                                        <Row>
-                                            <Col>{i.height / 10} m</Col>
-                                            <Col>{i.weight / 10} kg</Col>
-                                        </Row>
-                                        <Row style={{ justifyContent: 'center' }}>Stats:</Row>
-                                        <Row>
-                                            <Col>ATK:</Col>
-                                            <Col>DEF:</Col>
-                                            <Col>SPEED:</Col>
-                                        </Row>
+                                        <div className="p-3 mb-3" style={{
+                                            border:'solid',
+                                            borderWidth: '1px',
+                                            borderColor: 'lightgray',
+                                            borderRadius: '15px'
+                                        }}>
+                                            <Row className="p-2">
+                                                {i.types.map((j,l)=>{
+                                                    return(
+                                                        <Col key={l}>{j.type.name}</Col>
+                                                    )
+                                                })}
+                                            </Row>
+                                            <Row className="p-2">
+                                                <Col>{i.height / 10} m</Col>
+                                                <Col>{i.weight / 10} kg</Col>
+                                            </Row>
+                                            
+                                        </div>
+
                                         <Button variant="orng" onClick={() => this.showDetail(i)}>Ver detalles</Button>
                                     </Card.Body>
                                 </Card>
@@ -375,10 +388,10 @@ class PokemonList extends Component {
         return <Row className="mt-3">
             <Col xs={1}></Col>
             <Col xs={12} md={10}>
-                <Form>
+                <Form onSubmit={this.handleSearch} noValidate>
                     <InputGroup>
                         <InputGroup.Prepend>
-                            <Button onClick={this.handleSearch}>
+                            <Button type='submit'>
                                 Filtrar
                             </Button>
                         </InputGroup.Prepend>
