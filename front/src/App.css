@@ -46,8 +46,8 @@
 }
 
 .spinner-container {
-  position: absolute;
-  top: 25%;
+  color: #FF462C;
+  position: relative;
   left: 50%;
 }
 

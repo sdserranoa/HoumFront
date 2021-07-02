@@ -1,5 +1,16 @@
 import React, { Component } from 'react';
-import { Spinner, Card, Button, Col, Row, Dropdown, DropdownButton, ButtonGroup, InputGroup, FormControl, Form } from 'react-bootstrap';
+import {
+    Spinner,
+    Card, Button,
+    Col,
+    Row,
+    Dropdown,
+    DropdownButton,
+    ButtonGroup,
+    InputGroup,
+    FormControl,
+    Form
+} from 'react-bootstrap';
 import PokemonDetail from './PokemonDetail';
 
 class PokemonList extends Component {
@@ -62,6 +73,8 @@ class PokemonList extends Component {
         this.loadAll = this.loadAll.bind(this)
         this.showDetail = this.showDetail.bind(this)
         this.closeDetail = this.closeDetail.bind(this)
+        this.handleSearch = this.handleSearch.bind(this)
+        this.onSearchChange = this.onSearchChange.bind(this)
     }
 
     componentDidMount() {
@@ -101,6 +114,10 @@ class PokemonList extends Component {
         }).catch(err => {
             console.log(err)
         }) */
+    }
+
+    onSearchChange(e) {
+        this.setState({ searchTerm: e.target.value })
     }
 
     loadPokemonInfo(data) {
@@ -155,7 +172,6 @@ class PokemonList extends Component {
                 console.log(err)
             })
         })
-
     }
 
     filter(filter, filterType) {
@@ -175,7 +191,26 @@ class PokemonList extends Component {
         })
     }
 
-    loadPokemonFilterInfo(data) {
+    handleSearch() {
+        this.setState({ showLoadAllSpinner: true }, () => {
+            fetch(process.env.REACT_APP_API_URL + "pokemon/?limit=" + this.state.totalPokemon, {
+                method: 'GET'
+            }).then(res => {
+                return res.json()
+            }).then(data => {
+                this.setState({ nextPage: data.next, totalPokemon: data.count })
+                let aux = [];
+                aux = data.results
+                let res = aux.filter(x => x.name.includes(this.state.searchTerm))
+                console.log(res);
+                this.loadPokemonFilterInfo(res)
+            }).catch(err => {
+                console.log(err)
+            })
+        })
+    }
+
+    loadPokemonFilterInfo(data, callback) {
         let pokeArr = []
         this.setState({ showSpinner: true }, () => {
             let requests = data.map((item) => {
@@ -193,7 +228,11 @@ class PokemonList extends Component {
                 })
             })
             Promise.all(requests).then(() => {
-                this.setState({ pokemonList: pokeArr, showSpinner: false, showLoadAllSpinner: false })
+                this.setState({ pokemonList: pokeArr, showSpinner: false, showLoadAllSpinner: false }, () => {
+                    if (callback) {
+                        callback()
+                    }
+                })
             })
         })
 
@@ -288,7 +327,7 @@ class PokemonList extends Component {
 
     renderPokemon() {
         if (this.state.showSpinner) {
-            return <div className="spinner-container">
+            return <div className="spinner-container mt-5">
                 <Spinner animation="border" role="status">
                     <span className="sr-only">Cargando...</span>
                 </Spinner>
@@ -339,13 +378,14 @@ class PokemonList extends Component {
                 <Form>
                     <InputGroup>
                         <InputGroup.Prepend>
-                            <Button>
+                            <Button onClick={this.handleSearch}>
                                 Filtrar
                             </Button>
                         </InputGroup.Prepend>
                         <FormControl
                             placeholder="Buscar..."
                             aria-label="Search"
+                            onChange={this.onSearchChange}
                         />
                         <DropdownButton className="ml-4" id="dropdown-basic-button" title="Type">
                             {this.state.typesList.map((i, k) => {
