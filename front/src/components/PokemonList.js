@@ -140,8 +140,7 @@ class PokemonList extends Component {
             let aux = this.state.pokemonList
             pokeArr = aux.concat(pokeArr)
             this.setState({ pokemonList: pokeArr, showSpinner: false, showLoadMoreSpinner: false })
-        }
-        )
+        })
     }
 
     loadMore() {
@@ -387,11 +386,11 @@ class PokemonList extends Component {
     renderFilters() {
         return <Row className="mt-3">
             <Col xs={1}></Col>
-            <Col xs={12} md={10}>
+            <Col xs={10}>
                 <Form onSubmit={this.handleSearch} noValidate>
                     <InputGroup>
                         <InputGroup.Prepend>
-                            <Button type='submit'>
+                            <Button variant='outline-orng' type='submit'>
                                 Filtrar
                             </Button>
                         </InputGroup.Prepend>
@@ -400,7 +399,7 @@ class PokemonList extends Component {
                             aria-label="Search"
                             onChange={this.onSearchChange}
                         />
-                        <DropdownButton className="ml-4" id="dropdown-basic-button" title="Type">
+                        <DropdownButton variant='outline-orng' className="ml-4" id="dropdown-basic-button" title="Type">
                             {this.state.typesList.map((i, k) => {
                                 return (
                                     <Dropdown.Item key={k} onClick={() => this.filter(i, "type")}>{i}</Dropdown.Item>

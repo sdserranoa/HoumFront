@@ -1,5 +1,6 @@
 import './App.css';
 import Footer from './components/Footer';
+import ItemsList from './components/ItemsList';
 import Navmenu from './components/Navmenu';
 import PokemonList from './components/PokemonList';
 
@@ -31,6 +32,7 @@ function App() {
       </style>
       <Navmenu />
       <PokemonList />
+      <ItemsList/>
       <Footer />
     </div>
   );

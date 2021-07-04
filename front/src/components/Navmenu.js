@@ -10,8 +10,7 @@ class Navmenu extends Component {
                     <Navbar.Toggle />
                     <Nav className="justify-content-center">
                         <Nav.Link href="#home">Pokemon</Nav.Link>
-                        <Nav.Link href="#features">Locations</Nav.Link>
-                        <Nav.Link href="#pricing">Items</Nav.Link>
+                        <Nav.Link href="#Items">Items</Nav.Link>
                     </Nav>
                 </Navbar>
             </div>

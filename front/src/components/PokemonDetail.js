@@ -3,6 +3,7 @@ import { Button, Modal, Row, Col, ButtonGroup, Table } from 'react-bootstrap';
 import { RiSwordFill, RiHeartFill, RiShieldFill, RiSwordLine, RiShieldLine } from 'react-icons/ri';
 import { GiRunningShoe, GiWeight } from 'react-icons/gi'
 import { FaRulerVertical } from 'react-icons/fa'
+import { CgPokemon } from 'react-icons/cg'
 
 class PokemonDetail extends Component {
 
@@ -11,7 +12,8 @@ class PokemonDetail extends Component {
 
         this.state = {
             image: "front_default",
-            info: "info"
+            info: "info",
+            moves: []
         }
 
         this.handleClose = this.handleClose.bind(this)
@@ -22,6 +24,9 @@ class PokemonDetail extends Component {
     }
 
     handleInfoChange(info) {
+        if (info === 'moves') {
+            this.loadMovesInfo()
+        }
         this.setState({ info: info })
     }
 
@@ -31,6 +36,26 @@ class PokemonDetail extends Component {
             info: "info"
         })
         this.props.close()
+    }
+
+    loadMovesInfo(callback) {
+        let movesArr = []
+        let requests = this.props.pokemon.moves.map((item) => {
+            return new Promise(resolve=> {
+                fetch(item.move.url, {
+                    method: 'GET'
+                }).then(res => {
+                    return res.json()
+                }).then(moveInfo => {
+                    movesArr.push(moveInfo)
+                    resolve()
+                })
+            })
+        })
+        Promise.all(requests).then(() => {
+            console.log(movesArr);
+            this.setState({ moves: movesArr })
+        })
     }
 
     renderImage() {
@@ -77,6 +102,15 @@ class PokemonDetail extends Component {
                         <h4><FaRulerVertical className="mx-4 my-2" />Height: {this.props.pokemon.height / 10} m</h4>
                     </Col>
                 </Row>
+                <Row>
+                    {this.props.pokemon.types.map((i, k) => {
+                        return (
+                            <Col key={k} xs={12} md={6}>
+                                <h4><CgPokemon className="mx-4 my-2" />Type{k}: {i.type.name}</h4>
+                            </Col>
+                        )
+                    })}
+                </Row>
                 <Row style={{ justifyContent: 'center' }}>
                     <h3>STATS</h3>
                 </Row>
@@ -120,15 +154,14 @@ class PokemonDetail extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {this.props.pokemon.moves.map((i, k) => {
-                                    let move = i.move
-                                    console.log(move);
+                                {this.state.moves.map((i, k) => {
                                     return (
                                         <tr key={k}>
-                                            <td>{}</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
+                                            <td>{i.name}</td>
+                                            <td>{i.pp}</td>
+                                            <td>{i.accuracy}</td>
+                                            <td>{i.damage_class.name}</td>
+                                            <td>{i.type.name}</td>
                                         </tr>
                                     )
                                 })}
@@ -141,7 +174,7 @@ class PokemonDetail extends Component {
     }
 
     render() {
-        console.log(this.props);
+        //console.log(this.props);
         return (
             <div>
                 <Modal show={this.props.show} onHide={this.handleClose} dialogClassName="my-modal">
