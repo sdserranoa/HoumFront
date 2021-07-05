@@ -3,7 +3,7 @@ import Footer from './components/Footer';
 import ItemsList from './components/ItemsList';
 import Navmenu from './components/Navmenu';
 import PokemonList from './components/PokemonList';
-import { BrowserRouter as Router, Switch, Route, } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 
 function App() {
   return (
@@ -39,6 +39,9 @@ function App() {
           </Route>
           <Route exact path='/items'>
             <ItemsList />
+          </Route>
+          <Route path='/'>
+            <Redirect to="/" />
           </Route>
         </Switch>
         <Footer />

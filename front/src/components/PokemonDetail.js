@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Button, Modal, Row, Col, ButtonGroup, Table } from 'react-bootstrap';
+import { Button, Modal, Row, Col, ButtonGroup } from 'react-bootstrap';
 import { RiSwordFill, RiHeartFill, RiShieldFill, RiSwordLine, RiShieldLine } from 'react-icons/ri';
 import { GiRunningShoe, GiWeight } from 'react-icons/gi'
 import { FaRulerVertical } from 'react-icons/fa'
 import { CgPokemon } from 'react-icons/cg'
+import MUIDataTable from "mui-datatables";
 
 class PokemonDetail extends Component {
 
@@ -41,13 +42,21 @@ class PokemonDetail extends Component {
     loadMovesInfo(callback) {
         let movesArr = []
         let requests = this.props.pokemon.moves.map((item) => {
-            return new Promise(resolve=> {
+            return new Promise(resolve => {
                 fetch(item.move.url, {
                     method: 'GET'
                 }).then(res => {
                     return res.json()
                 }).then(moveInfo => {
-                    movesArr.push(moveInfo)
+                    console.log(moveInfo);
+                    let aux = {
+                        name: moveInfo.name,
+                        pp: moveInfo.pp,
+                        accuracy: moveInfo.accuracy,
+                        damage_class: moveInfo.damage_class.name,
+                        type: moveInfo.type.name
+                    }
+                    movesArr.push(aux)
                     resolve()
                 })
             })
@@ -143,7 +152,60 @@ class PokemonDetail extends Component {
             return <div>
                 <Row>
                     <Col>
-                        <Table hover size="sm">
+                        <MUIDataTable
+                            title={"Moves"}
+                            data={this.state.moves}
+                            columns={[
+                                {
+                                    name: "name",
+                                    label: "Nombre",
+                                    options: {
+                                        filter: true,
+                                        sort: true,
+                                    }
+                                },
+                                {
+                                    name: "pp",
+                                    label: "PP",
+                                    options: {
+                                        filter: true,
+                                        sort: true,
+                                    }
+                                },
+                                {
+                                    name: "accuracy",
+                                    label: "Accuracy",
+                                    options: {
+                                        filter: true,
+                                        sort: true,
+                                    }
+                                },
+                                {
+                                    name: "damage_class",
+                                    label: "Clase de daño",
+                                    options: {
+                                        filter: true,
+                                        sort: false,
+                                    }
+                                },
+                                {
+                                    name: "type",
+                                    label: "Tipo",
+                                    options: {
+                                        filter: true,
+                                        sort: false,
+                                    }
+                                },
+                            ]}
+                            options={{
+                                filterType: 'dropdown',
+                                count: this.state.count,
+                                print: false,
+                                download: false,
+                                selectableRows: false,
+                            }}
+                        />
+                        {/* <Table hover size="sm">
                             <thead>
                                 <tr>
                                     <th>Name</th>
@@ -166,7 +228,7 @@ class PokemonDetail extends Component {
                                     )
                                 })}
                             </tbody>
-                        </Table>
+                        </Table> */}
                     </Col>
                 </Row>
             </div>
