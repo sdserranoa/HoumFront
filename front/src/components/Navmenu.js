@@ -6,11 +6,11 @@ class Navmenu extends Component {
         return (
             <div>
                 <Navbar bg="light">
-                    <Navbar.Brand href="#home">PokeApp</Navbar.Brand>
+                    <Navbar.Brand href="/">PokeApp</Navbar.Brand>
                     <Navbar.Toggle />
                     <Nav className="justify-content-center">
-                        <Nav.Link href="#home">Pokemon</Nav.Link>
-                        <Nav.Link href="#Items">Items</Nav.Link>
+                        <Nav.Link href="/">Pokemon</Nav.Link>
+                        <Nav.Link href="/items">Items</Nav.Link>
                     </Nav>
                 </Navbar>
             </div>

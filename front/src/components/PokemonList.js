@@ -65,7 +65,8 @@ class PokemonList extends Component {
                 ],
                 types: [],
                 weight: 0,
-                searchTerm: ""
+                searchTerm: "",
+                showClearSearch: false
             }
         }
 
@@ -75,6 +76,7 @@ class PokemonList extends Component {
         this.closeDetail = this.closeDetail.bind(this)
         this.handleSearch = this.handleSearch.bind(this)
         this.onSearchChange = this.onSearchChange.bind(this)
+        this.handleClearSearch = this.handleClearSearch.bind(this)
     }
 
     componentDidMount() {
@@ -200,7 +202,7 @@ class PokemonList extends Component {
                 }).then(res => {
                     return res.json()
                 }).then(data => {
-                    this.setState({ nextPage: data.next, totalPokemon: data.count })
+                    this.setState({ nextPage: data.next, totalPokemon: data.count, showClearSearch: true })
                     let aux = [];
                     aux = data.results
                     let res = aux.filter(x => x.name.includes(this.state.searchTerm))
@@ -289,8 +291,11 @@ class PokemonList extends Component {
         })
     }
 
-    renderLoadMore() {
+    handleClearSearch() {
+        window.location.reload()
+    }
 
+    renderLoadMore() {
         if (this.state.nextPage === null) {
             return <div></div>
         }
@@ -339,20 +344,20 @@ class PokemonList extends Component {
                 <Row className="mx-5">
                     {this.state.pokemonList.map((i, k) => {
                         return (
-                            <Col xs={12} sm={6} md={3} xl={3} xxl={2} key={k}>
+                            <Col xs={12} sm={6} md={3} xl={2} xxl={2} key={k}>
                                 <Card className="my-3">
                                     <Card.Img variant="top" src={i.sprites.front_default} />
                                     <Card.Body>
                                         <Card.Title>{i.name}</Card.Title>
                                         <div className="p-3 mb-3" style={{
-                                            border:'solid',
+                                            border: 'solid',
                                             borderWidth: '1px',
                                             borderColor: 'lightgray',
                                             borderRadius: '15px'
                                         }}>
                                             <Row className="p-2">
-                                                {i.types.map((j,l)=>{
-                                                    return(
+                                                {i.types.map((j, l) => {
+                                                    return (
                                                         <Col key={l}>{j.type.name}</Col>
                                                     )
                                                 })}
@@ -361,7 +366,7 @@ class PokemonList extends Component {
                                                 <Col>{i.height / 10} m</Col>
                                                 <Col>{i.weight / 10} kg</Col>
                                             </Row>
-                                            
+
                                         </div>
 
                                         <Button variant="orng" onClick={() => this.showDetail(i)}>Ver detalles</Button>
@@ -380,7 +385,15 @@ class PokemonList extends Component {
                 </Row>
             </div>
         }
+    }
 
+    renderClearSearch() {
+        if (this.state.showClearSearch) {
+            console.log("entra", this.state.searchTerm);
+            return <Button variant='danger' onClick={this.handleClearSearch}>X</Button>
+        } else {
+            return <div></div>
+        }
     }
 
     renderFilters() {
@@ -399,6 +412,8 @@ class PokemonList extends Component {
                             aria-label="Search"
                             onChange={this.onSearchChange}
                         />
+                        {this.renderClearSearch()}
+
                         <DropdownButton variant='outline-orng' className="ml-4" id="dropdown-basic-button" title="Type">
                             {this.state.typesList.map((i, k) => {
                                 return (

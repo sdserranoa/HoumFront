@@ -3,12 +3,14 @@ import Footer from './components/Footer';
 import ItemsList from './components/ItemsList';
 import Navmenu from './components/Navmenu';
 import PokemonList from './components/PokemonList';
+import { BrowserRouter as Router, Switch, Route, } from 'react-router-dom'
 
 function App() {
   return (
     <div>
-      <style type="text/css">
-        {`
+      <Router>
+        <style type="text/css">
+          {`
           .btn-orng {
               background-color: #FF462C;
               color: #FFF;
@@ -29,11 +31,18 @@ function App() {
               border-color:#FF462C
           }
           `}
-      </style>
-      <Navmenu />
-      <PokemonList />
-      <ItemsList/>
-      <Footer />
+        </style>
+        <Navmenu />
+        <Switch>
+          <Route exact path='/'>
+            <PokemonList />
+          </Route>
+          <Route exact path='/items'>
+            <ItemsList />
+          </Route>
+        </Switch>
+        <Footer />
+      </Router>
     </div>
   );
 }
