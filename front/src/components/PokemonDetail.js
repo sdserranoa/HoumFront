@@ -58,6 +58,8 @@ class PokemonDetail extends Component {
                     }
                     movesArr.push(aux)
                     resolve()
+                }).catch(err => {
+                    console.log(err)
                 })
             })
         })
