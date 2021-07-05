@@ -303,12 +303,12 @@ class PokemonList extends Component {
         if (this.state.showLoadMoreSpinner) {
             return <Button variant="outline-orng" onClick={this.loadMore}>
                 <Spinner size="sm" animation="border" role="status">
-                    <span className="sr-only">Cargando...</span>
+                    <span className="sr-only">Loading...</span>
                 </Spinner>
             </Button>
         } else {
             return <Button variant="outline-orng" onClick={this.loadMore}>
-                Cargar mas
+                See more
             </Button>
         }
     }
@@ -327,7 +327,7 @@ class PokemonList extends Component {
             </Button>
         } else {
             return <Button variant="outline-orng" onClick={this.loadAll}>
-                Cargar todos
+                See All
             </Button>
         }
     }
@@ -369,7 +369,7 @@ class PokemonList extends Component {
 
                                         </div>
 
-                                        <Button variant="orng" onClick={() => this.showDetail(i)}>Ver detalles</Button>
+                                        <Button variant="orng" onClick={() => this.showDetail(i)}>Details</Button>
                                     </Card.Body>
                                 </Card>
                             </Col>
@@ -404,11 +404,11 @@ class PokemonList extends Component {
                     <InputGroup>
                         <InputGroup.Prepend>
                             <Button variant='outline-orng' type='submit'>
-                                Filtrar
+                                Filter
                             </Button>
                         </InputGroup.Prepend>
                         <FormControl
-                            placeholder="Buscar..."
+                            placeholder="Search..."
                             aria-label="Search"
                             onChange={this.onSearchChange}
                         />

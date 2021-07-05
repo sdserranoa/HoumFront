@@ -158,7 +158,7 @@ class PokemonDetail extends Component {
                             columns={[
                                 {
                                     name: "name",
-                                    label: "Nombre",
+                                    label: "Name",
                                     options: {
                                         filter: true,
                                         sort: true,
@@ -182,7 +182,7 @@ class PokemonDetail extends Component {
                                 },
                                 {
                                     name: "damage_class",
-                                    label: "Clase de daño",
+                                    label: "Damage Class",
                                     options: {
                                         filter: true,
                                         sort: false,
@@ -190,7 +190,7 @@ class PokemonDetail extends Component {
                                 },
                                 {
                                     name: "type",
-                                    label: "Tipo",
+                                    label: "Type",
                                     options: {
                                         filter: true,
                                         sort: false,

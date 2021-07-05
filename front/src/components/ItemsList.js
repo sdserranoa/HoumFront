@@ -75,7 +75,7 @@ class ItemsList extends Component {
         const columns = [
             {
                 name: "name",
-                label: "Nombre",
+                label: "Name",
                 options: {
                     filter: true,
                     sort: true,
@@ -83,7 +83,7 @@ class ItemsList extends Component {
             },
             {
                 name: "cost",
-                label: "Costo",
+                label: "Cost",
                 options: {
                     filter: true,
                     sort: true,
@@ -91,7 +91,7 @@ class ItemsList extends Component {
             },
             {
                 name: "category",
-                label: "Categoría",
+                label: "Category",
                 options: {
                     filter: true,
                     sort: true,
